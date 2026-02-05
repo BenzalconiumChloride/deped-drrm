@@ -1,0 +1,67 @@
+.logo {
+            width: 70px;
+            height: 70px;
+            background-color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: var(--secondary-blue);
+        }
+        
+        .alert-banner {
+            background-color: #ffeb3b;
+            color: #333;
+            border-left: 5px solid #ff9800;
+        }
+        
+        .form-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .incident-category-card {
+            border: 2px solid #eaeaea;
+            border-radius: 12px;
+            padding: 40px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            height: 100%;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        .incident-category-card:hover {
+            border-color: var(--secondary-blue);
+            background-color: #f8fbff;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .category-icon {
+            font-size: 4rem;
+            color: var(--secondary-blue);
+            margin-bottom: 20px;
+        }
+        
+        .category-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-blue);
+            margin-bottom: 15px;
+        }
+        
+        .category-description {
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .category-examples {
+            font-size: 0.85rem;
+            color: #999;
+            font-style: italic;
+        }
