@@ -21,7 +21,7 @@ $today_a = date("a");
 $dbHost = 'localhost';
 $dbUser = 'root';
 $dbPass = '';
-$dbName = 'db_deped';
+$dbName = 'db_drrm';
 
 // $dbHost = 'sql112.yzz.me';
 // $dbUser = 'yzzme_40764471';

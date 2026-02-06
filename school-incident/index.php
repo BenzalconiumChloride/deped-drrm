@@ -7,25 +7,25 @@ require_once '../global-library/database.php';
 // require_once '../include/config.php';
 
 
-if (isset($_GET['disaster'])) {
-    $view = 'Disaster';
+if (isset($_GET['school-incident'])) {
+    $view = 'School Incident';
 } else {
     $view = '';
 }
 
-$currentPage = 'disaster';
+$currentPage = 'school-incident';
 
 
 switch ($view) {
-    case 'Disaster':
-        $content   = 'disaster.php';
-        $pageTitle = 'Disaster';
+    case 'School Incident':
+        $content   = 'school-incident.php';
+        $pageTitle = 'School Incident';
         break;
 
 
     default:
-        $content   = 'disaster.php';
-        $pageTitle = 'Disaster';
+        $content   = 'school-incident.php';
+        $pageTitle = 'School Incident';
         break;
 }
 
