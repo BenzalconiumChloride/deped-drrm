@@ -41,10 +41,9 @@
         
         <!-- Form Container -->
         <div class="form-container p-4 p-md-5 mb-4">
-            <form id="schoolIncidentForm" action="submit_school_incident.php" method="POST">
-                <input type="hidden" name="incidentCategory" value="School Incident">
+            <form id="schoolIncidentForm" enctype="multipart/form-data" method="POST">
                 
-                <!-- Step 1: Disaster Type -->
+                <!-- Step 1: Incident Type -->
                 <div class="form-section active" id="section1">
                     <h2 class="form-title mb-4 d-flex align-items-center gap-2">
                         <i class="fas fa-school"></i> 1. Select School Incident Type
@@ -128,7 +127,8 @@
                                 </div>
                             </div>
                         </div>
-                        <input type="hidden" id="disasterType" name="incidentType" required>
+                        <!-- DB field: incident_type -->
+                        <input type="hidden" id="disasterType" name="incident_type" required>
                     </div>
                     
                     <div class="d-flex justify-content-end">
@@ -148,15 +148,18 @@
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label for="incidentDate" class="form-label fw-semibold">Date of Incident <span class="required">*</span></label>
-                                <input type="date" class="form-control" id="incidentDate" name="incidentDate" required>
+                                <!-- DB field: incident_date (varchar 20) -->
+                                <input type="date" class="form-control" id="incidentDate" name="incident_date" required>
                             </div>
                             <div class="col-md-6">
                                 <label for="incidentTime" class="form-label fw-semibold">Time of Incident <span class="required">*</span></label>
-                                <input type="time" class="form-control" id="incidentTime" name="incidentTime" required>
+                                <!-- DB field: incident_time (varchar 20) -->
+                                <input type="time" class="form-control" id="incidentTime" name="incident_time" required>
                             </div>
                             <div class="col-12">
                                 <label for="location" class="form-label fw-semibold">Specific Location <span class="required">*</span></label>
-                                <input type="text" class="form-control" id="location" name="location" required placeholder="e.g., School Gymnasium, Classroom Building, School Grounds">
+                                <!-- DB field: incident_location (varchar 100) -->
+                                <input type="text" class="form-control" id="location" name="incident_location" required placeholder="e.g., School Gymnasium, Classroom Building, School Grounds">
                             </div>
                         </div>
                     </div>
@@ -181,12 +184,8 @@
                                 <span class="small fw-semibold">Critical (Emergency)</span>
                             </div>
                         </div>
-                        <input type="hidden" id="severity" name="severity" required>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label for="description" class="form-label fw-semibold">Incident Description <span class="required">*</span></label>
-                        <textarea class="form-control" id="description" name="description" rows="5" required placeholder="Provide a detailed description of what happened..."></textarea>
+                        <!-- DB field: incident_level (varchar 20) -->
+                        <input type="hidden" id="severity" name="incident_level" required>
                     </div>
                     
                     <div class="d-flex justify-content-between">
@@ -212,44 +211,59 @@
                         
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">Number of Casualties/Injuries</label>
+                                <label class="form-label fw-semibold">Number of Affected Persons</label>
                                 <div class="row g-2">
                                     <div class="col-6">
                                         <label for="studentsAffected" class="form-label small">Students</label>
-                                        <input type="number" class="form-control" id="studentsAffected" name="studentsAffected" min="0" value="0" placeholder="0">
+                                        <!-- DB field: affected_student (int 20) -->
+                                        <input type="number" class="form-control" id="studentsAffected" name="affected_student" min="0" value="0" placeholder="0">
                                     </div>
                                     <div class="col-6">
                                         <label for="staffAffected" class="form-label small">Staff/Teachers</label>
-                                        <input type="number" class="form-control" id="staffAffected" name="staffAffected" min="0" value="0" placeholder="0">
+                                        <!-- DB field: affected_staff (int 20) -->
+                                        <input type="number" class="form-control" id="staffAffected" name="affected_staff" min="0" value="0" placeholder="0">
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="casualtyDetails" class="form-label">Casualty/Injury Details</label>
-                                <textarea class="form-control" id="casualtyDetails" name="casualtyDetails" rows="4" placeholder="Brief description of casualties or injuries..."></textarea>
                             </div>
                         </div>
                     </div>
                     
                     <div class="mb-4 pb-4 border-bottom">
-                        <label for="propertyDamage" class="form-label fw-semibold">Property Damage</label>
-                        <textarea class="form-control" id="propertyDamage" name="propertyDamage" rows="3" placeholder="Description of property damage (buildings, equipment, facilities), including estimated cost if known..."></textarea>
-                    </div>
-                    
-                    <div class="mb-4 pb-4 border-bottom">
-                        <label for="evacuationStatus" class="form-label fw-semibold">Evacuation Status</label>
-                        <select class="form-select" id="evacuationStatus" name="evacuationStatus">
-                            <option value="">Select Status</option>
-                            <option value="No Evacuation">No Evacuation</option>
-                            <option value="Partial Evacuation">Partial Evacuation</option>
-                            <option value="Full Evacuation">Full Evacuation</option>
-                            <option value="School Closed">School Closed</option>
-                        </select>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label for="immediateActions" class="form-label fw-semibold">Immediate Actions Taken</label>
-                        <textarea class="form-control" id="immediateActions" name="immediateActions" rows="3" placeholder="Evacuation procedures, emergency services called, first aid provided, etc..."></textarea>
+                        <label class="form-label fw-semibold">Class/School Suspension Information</label>
+                        
+                        <div class="mb-3">
+                            <label for="classSuspension" class="form-label">Is there an official declaration of Class/School Suspension? <span class="required">*</span></label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="suspension" id="classSuspensionYes" value="1" required>
+                                <label class="form-check-label" for="classSuspensionYes">Yes</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="suspension" id="classSuspensionNo" value="0" required>
+                                <label class="form-check-label" for="classSuspensionNo">No</label>
+                            </div>
+                        </div>
+                        
+                        <!-- Conditional fields that appear when suspension = Yes -->
+                        <div id="suspensionDetails" class="d-none">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="suspensionDate" class="form-label">Date of Suspension</label>
+                                    <!-- DB field: suspension_date (varchar 20) -->
+                                    <input type="date" class="form-control" id="suspensionDate" name="suspension_date">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="suspensionBasis" class="form-label">Basis for Suspension</label>
+                                    <!-- DB field: suspension_basis (varchar 20) -->
+                                    <select class="form-select" id="suspensionBasis" name="suspension_basis">
+                                        <option value="">Select Basis</option>
+                                        <option value="DepEd Order">DepEd Order</option>
+                                        <option value="LGU Order">LGU Order</option>
+                                        <option value="School Decision">School Decision</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="d-flex justify-content-between">
@@ -269,29 +283,13 @@
                     </h2>
                     
                     <div class="mb-4 pb-4 border-bottom">
+                        <h3 class="h6 mb-3" style="color: var(--primary-blue);">School Details</h3>
                         <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="schoolName" class="form-label fw-semibold">School Name <span class="required">*</span></label>
-                                <input type="text" class="form-control" id="schoolName" name="schoolName" required placeholder="e.g. Silay City National High School">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="schoolId" class="form-label fw-semibold">School ID <span class="required">*</span></label>
-                                <input type="text" class="form-control" id="schoolId" name="schoolId" required placeholder="e.g. 123456">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="district" class="form-label fw-semibold">District <span class="required">*</span></label>
-                                <select class="form-select" id="district" name="district" required>
-                                    <option value="">Select District</option>
-                                    <option value="Silay District I">Silay District I</option>
-                                    <option value="Silay District II">Silay District II</option>
-                                    <option value="Silay District III">Silay District III</option>
-                                    <option value="Silay District IV">Silay District IV</option>
-                                    <option value="Silay District V">Silay District V</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="schoolAddress" class="form-label fw-semibold">School Address</label>
-                                <input type="text" class="form-control" id="schoolAddress" name="schoolAddress" placeholder="Complete school address">
+                            <div class="col-md-12">
+                                <label for="schoolAddress" class="form-label fw-semibold">School Name & Address <span class="required">*</span></label>
+                                <!-- DB field: school_add (varchar 100) -->
+                                <input type="text" class="form-control" id="schoolAddress" name="school_add" required placeholder="Complete school name and address">
+                                <small class="text-muted">e.g., Silay City National High School, Balaring St, Silay City</small>
                             </div>
                         </div>
                     </div>
@@ -300,43 +298,42 @@
                         <h3 class="h6 mb-3" style="color: var(--primary-blue);">Reporting Person Information</h3>
                         
                         <div class="row g-3">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <label for="reporterName" class="form-label fw-semibold">Reporting Person <span class="required">*</span></label>
-                                <input type="text" class="form-control" id="reporterName" name="reporterName" required placeholder="Full name of person reporting">
+                                <!-- DB field: reporting_person (varchar 100) -->
+                                <input type="text" class="form-control" id="reporterName" name="reporting_person" required placeholder="Full name of person reporting">
                             </div>
-                            <div class="col-md-6">
-                                <label for="reporterPosition" class="form-label fw-semibold">Position <span class="required">*</span></label>
-                                <select class="form-select" id="reporterPosition" name="reporterPosition" required>
-                                    <option value="">Select Position</option>
-                                    <option value="School Principal">School Principal</option>
-                                    <option value="Assistant Principal">Assistant Principal</option>
-                                    <option value="Teacher">Teacher</option>
-                                    <option value="DRRM Coordinator">DRRM Coordinator</option>
-                                    <option value="School Nurse">School Nurse</option>
-                                    <option value="Guidance Counselor">Guidance Counselor</option>
-                                    <option value="School Security">School Security</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                            </div>
+                           
                             <div class="col-md-6">
                                 <label for="contactNumber" class="form-label fw-semibold">Contact Number <span class="required">*</span></label>
-                                <input type="tel" class="form-control" id="contactNumber" name="contactNumber" required placeholder="e.g. 09123456789">
+                                <!-- DB field: contact_number (int 20) -->
+                                <input type="tel" class="form-control" id="contactNumber" name="contact_number" required placeholder="e.g. 09123456789" pattern="[0-9]+">
                             </div>
                             <div class="col-md-6">
                                 <label for="emailAddress" class="form-label fw-semibold">Email Address</label>
-                                <input type="email" class="form-control" id="emailAddress" name="emailAddress" placeholder="email@example.com">
+                                <!-- DB field: email_add (varchar 50) -->
+                                <input type="email" class="form-control" id="emailAddress" name="email_add" placeholder="email@example.com">
                             </div>
                         </div>
                     </div>
                     
                     <div class="mb-4 pb-4 border-bottom">
-                        <label for="assistanceNeeded" class="form-label fw-semibold">Assistance Needed from DRRM Division</label>
-                        <textarea class="form-control" id="assistanceNeeded" name="assistanceNeeded" rows="4" placeholder="What assistance is needed? (e.g., structural assessment, emergency supplies, temporary shelter, medical support)"></textarea>
+                        <label for="incidentPhotos" class="form-label fw-semibold">Upload Incident Photos</label>
+                        <div class="upload-area" id="uploadArea">
+                            <i class="fas fa-cloud-upload-alt fa-2x mb-2"></i>
+                            <p>Drag & drop photos here or click to browse</p>
+                            <!-- DB field: sThumbnail (varchar 50) - stores filename -->
+                            <input type="file" id="incidentPhotos" name="sThumbnail" accept="image/*" class="d-none">
+                            <button type="button" class="btn btn-outline-secondary btn-sm mt-2" onclick="document.getElementById('incidentPhotos').click()">Browse Files</button>
+                        </div>
+                        <div id="previewContainer" class="mt-3"></div>
+                        <small class="text-muted">Upload the main incident photo. Additional photos can be attached after submission.</small>
                     </div>
                     
                     <div class="mb-4">
-                        <label for="additionalInfo" class="form-label fw-semibold">Additional Information</label>
-                        <textarea class="form-control" id="additionalInfo" name="additionalInfo" rows="4" placeholder="Any other relevant information, observations, or context about the disaster..."></textarea>
+                        <label for="additionalInfo" class="form-label fw-semibold">Additional Information / Description</label>
+                        <!-- DB field: sDescription (text) -->
+                        <textarea class="form-control" id="additionalInfo" name="sDescription" rows="4" placeholder="Any other relevant information, observations, or context about the incident..."></textarea>
                     </div>
                     
                     <div class="d-flex justify-content-between gap-3 flex-wrap">
@@ -350,8 +347,7 @@
                 </div>
             </form>
         </div>
-        
-        <?php include 'includes/footer.php'; ?>
+
     </div>
     
     <!-- Confirmation Modal -->
@@ -370,8 +366,6 @@
             </div>
         </div>
     </div>
-    
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     
     <script src="<?php echo WEB_ROOT; ?>school-incident/js/school-incident.js"></script>
